@@ -41,6 +41,16 @@ def make_data(lenrecord):
     dt = history[len(history)-lenrecord:len(history)]
     return data,label,[dt]
 
+def make_data_v2(lenrecord):
+    history = get_history_result()
+    data = []
+    label = []
+    for i in range(len(history)-lenrecord):
+        data.append(history[i:i+lenrecord])
+        label.append(history[i+lenrecord])
+    dt = history[len(history)-lenrecord:len(history)]
+    return data,label,[dt]
+
 
 class Record:
     index = 0
