@@ -1,7 +1,7 @@
 
 class Player:
     def __init__(self,moneys=0,playing=False) :
-        self.predict = prophet.make_predict_v2()
+        self.predict = prediction.make_predict_v2()
         self.moneys = moneys
         self.isPlaying = playing
         self.true = 0
@@ -15,7 +15,7 @@ class Player:
         else:
             self.false+=1 
     def make_predict(self):
-        self.predict = prophet.make_predict_v2()
+        self.predict = prediction.make_predict_v2()
     def bets(self):
         global indexBIG,indexSMALL,indexVND10K,indexVND50K,indexVND100K
         if self.isPlaying == False:
@@ -52,7 +52,7 @@ def fix_line(line,properties,predict,resultRaw):
 
 #_________________________________________________________________
 
-import manipulation,prophet,getAPI,draw
+import manipulation,prediction,getAPI,draw
 import json,time
 from click import  style
 #_________________________________________________________________

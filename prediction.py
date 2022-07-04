@@ -1,10 +1,11 @@
-from sklearn.tree import DecisionTreeClassifier
+from sklearn import tree
+clf = tree.DecisionTreeClassifier()
 
 from getAPI import make_data,make_data_v2
 
-def predict_by_decisiontree(X_train,Y_train,X_test,random_state=100,max_depth=10):
-    tree = DecisionTreeClassifier(criterion = "gini",random_state = random_state,max_depth=max_depth, min_samples_leaf=5)
-    return tree.fit(X_train,Y_train).predict(X_test)[0]
+def predict_by_decisiontree(X_train,Y_train,X_test):
+    clf.fit(X_train, Y_train)
+    return clf.predict(X_test)[0]
 
 
 
