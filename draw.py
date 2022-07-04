@@ -17,5 +17,5 @@ def draw_result(x,y):
 def draw_screen(data,headers):
     # os.system("clear")
     os.system("cls")
-    print(columnar(data, headers, justify="c", no_borders = True))
+    print(columnar(data, headers, justify="c"))
     print("waiting...")
