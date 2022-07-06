@@ -2,6 +2,8 @@ from sklearn import tree
 
 from getAPI import make_data,make_data_v2
 
+from x3 import make_data_v10 
+
 def predict_by_decisiontree(X_train,Y_train,X_test,rand = None):
     clf = tree.DecisionTreeClassifier(random_state=rand)
     clf.fit(X_train, Y_train)
@@ -36,6 +38,7 @@ def work_with_list(listt):
     return models
 
 def number_to_string(number):
+    print("number:",number)
     if number>10:
         return "BIG"
     return "SMALL"
@@ -116,21 +119,25 @@ def create_random_state():
     print("max score: ",m)
     return rds
 
-def make_predict_v2():
-    random_state_s = create_random_state()
-    print(random_state_s)
-    X_train,Y_train,X_test = make_data(10)
+# def make_predict_v2():
+#     random_state_s = create_random_state()
+#     print(random_state_s)
+#     X_train,Y_train,X_test = make_data(10)
 
-    b = 0
-    s = 0
-    for random_state in random_state_s:
-        predict = predict_by_decisiontree(X_train,Y_train,X_test,random_state)
-        if predict == "BIG":
-            b+=1
-        if predict == "SMALL":
-            s+=1
-    if b>s:
-        return "BIG"
-    elif s>b:
-        return "SMALL"
-    return ""
+#     b = 0
+#     s = 0
+#     for random_state in random_state_s:
+#         predict = predict_by_decisiontree(X_train,Y_train,X_test,random_state)
+#         if predict == "BIG":
+#             b+=1
+#         if predict == "SMALL":
+#             s+=1
+#     if b>s:
+#         return "BIG"
+#     elif s>b:
+#         return "SMALL"
+#     return ""
+
+
+def make_predict_v2():
+    return number_to_string(make_data_v10())

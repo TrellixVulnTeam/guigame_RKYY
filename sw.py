@@ -52,9 +52,11 @@ def fix_line(line,properties,predict,resultRaw):
 
 #_________________________________________________________________
 
-import manipulation,prediction,getAPI,draw
+import manipulation,getAPI,draw #,prediction
 import json,time
 from click import  style
+import noname as prediction
+
 #_________________________________________________________________
 
 try:
