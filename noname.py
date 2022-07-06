@@ -9,14 +9,27 @@ import time
 ####################################
 
 
+def convert_result(listt):
+    for i in range(len(listt)):
+        if listt[i]>10:
+            listt[i] = 1
+        else:
+            listt[i] = 0
+    return listt
+def convert_predict(number):
+    if number == 1:
+        return "BIG"
+    return "SMALL"
+
 def make_random_data(height = 1000, width = 100):
     dt_1 = np.random.default_rng().integers(low=1,high=7,size=(height,width))
     dt_2 = np.random.default_rng().integers(low=1,high=7,size=(height,width))
     dt_3 = np.random.default_rng().integers(low=1,high=7,size=(height,width))
-    lb_1 = np.random.default_rng().integers(low=1,high=7,size=(height,))
-    lb_2 = np.random.default_rng().integers(low=1,high=7,size=(height,))
-    lb_3 = np.random.default_rng().integers(low=1,high=7,size=(height,))
-    return dt_1+dt_2+dt_3, lb_1+lb_2+lb_3
+    # lb_1 = np.random.default_rng().integers(low=1,high=7,size=(height,))
+    # lb_2 = np.random.default_rng().integers(low=1,high=7,size=(height,))
+    # lb_3 = np.random.default_rng().integers(low=1,high=7,size=(height,))
+    lb = np.random.default_rng().integers(low=0,high=2,size=(height,))
+    return dt_1+dt_2+dt_3, lb
 
 def number_to_string(number):
     print("number:",number)
@@ -27,6 +40,8 @@ def number_to_string(number):
 def make_predict_v2():
     len_record = 100    
     score_data, score_label,test_data = make_data_v2(len_record)
+    score_label = convert_result(score_label)
+    # print(score_label)
     start = time.time()
 
     max_score = 0
@@ -39,8 +54,9 @@ def make_predict_v2():
         if score>max_score:
             max_score = score
             max_predict = clf.predict(test_data)[0]
-    print(max_predict)
-    return number_to_string(max_predict)
+            # print(max_score,max_predict)
+    # print(max_predict)
+    return convert_predict(max_predict)
 
 
 
@@ -70,3 +86,6 @@ def make_predict_v2():
 
 
 # print(make_predict_v2())
+
+
+
