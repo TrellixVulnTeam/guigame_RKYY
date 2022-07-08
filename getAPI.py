@@ -11,11 +11,7 @@ def number_to_result(number):
     return "SMALL"
 def get_response():
     global URL
-    #try:
     return requests.get(URL)
-    # except nameError:
-    #     print(nameError)
-    #     return get_response()
 
 def get_json():
     global URL
@@ -29,17 +25,6 @@ def get_history_result():# return [10,14,5,7,16]
         kq = history_list[i]["resultRaw"]
         history.append(int(kq[0])+int(kq[2])+int(kq[4]))
     return history
-
-def make_data(lenrecord):
-    history = get_history_result()
-    data = []
-    label = []
-    for i in range(len(history)-lenrecord):
-        data.append(history[i:i+lenrecord])
-    #     label.append(history[i+lenrecord])
-        label.append(number_to_result(history[i+lenrecord]))
-    dt = history[len(history)-lenrecord:len(history)]
-    return data,label,[dt]
 
 def make_data_v2(lenrecord):
     history = get_history_result()
@@ -94,6 +79,3 @@ def new_game():
                 time.sleep(1)
         time.sleep(1)
 
-
-# print(get_json())
-# print(get_response())

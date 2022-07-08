@@ -1,1 +1,0 @@
-#lam theo kieu list predict x2
