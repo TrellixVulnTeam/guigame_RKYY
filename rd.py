@@ -35,46 +35,49 @@ def get_timeBetCountdown(js):
 def get_dealerName(js):
     return js["dealerName"]
 
-# def get_history_by_id(id):
-#     js150 = get_json_150()
-#     newid = get_id(js150[0])
-#     index = newid - id 
-
-#     history = []
-
-#     while index<150 and len(history)<5:
-#         history.append(get_resultRaw(js150[index]))
-#         index +=1
-
-#     return history
+# def convert_predict(number):
+#     if number == 1:
+#         return "BIG"
+#     return "SMALL"
 
 
-class Match:
-    def __init__(self,js):
-        self.id = get_id(js)
-        self.dealerName = get_dealerName(js)
-        self.resultRaw = get_resultRaw(js)
-        self.betTypeResult = get_betTypeResult(js)
-    def show(self):
-        print(self.id,self.dealerName,self.resultRaw,self.betTypeResult,self.history)
+def number_to_predict(number):
+    if number>10:
+        return 1
+    return 0
+def string_to_number_result(string):
+    return int(string[0])+int(string[2])+int(string[4])
 
-    def get_info(self):
-        return [self.id,self.dealerName,self.resultRaw,self.betTypeResult,self.history]
-def create_Time():
-    Time = []
+def make_line(js150,i):
+        global  dealerNameList
+        id = get_id(js150[i])
+        dealerName = get_dealerName(js150[i])
+        if dealerName in dealerNameList:
+            index = dealerNameList.index(dealerName)
+        else:
+            index = len(dealerNameList)-1
+            dealerNameList.append(dealerName)
+        ######van truoc
+        resultRaw = get_resultRaw(js150[i+1])
+        # betTypeResult = get_betTypeResult(js150[i+1])
+        l2 = string_to_number_result(get_resultRaw(js150[i+2]))
+        l3 = string_to_number_result(get_resultRaw(js150[i+3]))
+        l4 = string_to_number_result(get_resultRaw(js150[i+4]))
+        l5 = string_to_number_result(get_resultRaw(js150[i+5]))
+        l6 = string_to_number_result(get_resultRaw(js150[i+6]))
+        return numpy.array([id,index,int(resultRaw[0]),int(resultRaw[2]),int(resultRaw[4]),l2,l3,l4,l5,l6])
+
+def make_data():
+    data = []
+    label = []
     js150 = get_json_150()
-    for js in js150:
-        match = Match(js)
-        Time.append(match)
-    Time.reverse()
-    return Time
 
-def show_time(Time):
-    for match in Time:
-        match.show()
-
-Time = create_Time()
-
-show_time(Time)
+    for i in range(len(js150)-7,0,-1):
+        data.append( make_line(js150,i))
+        label.append(number_to_predict(string_to_number_result(get_resultRaw(js150[i]))))
+    test = [make_line(js150,0)]
+    return data,label,test
 
 
+
+dealerNameList = []

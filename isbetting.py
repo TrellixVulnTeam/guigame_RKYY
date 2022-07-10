@@ -1,12 +1,19 @@
 import requests,json,time,numpy,pyautogui,os
 from columnar import columnar
 from click import  style
+from rd import make_data
 from sklearn import tree
 clf = tree.DecisionTreeClassifier()
 
 
 ##########____________Pyautogui,________________________
 
+def make_predict():
+    global predict
+    data,label,test = make_data()
+    predict =  convert_predict(clf.fit(data,label).predict(test)[0])
+    print("make_predict v2",predict)
+    add_line()
 
 def quit_game(mes):
     import sys
@@ -39,7 +46,7 @@ def bets():
     if moneys == 0 or predict == None:
         return
     numbervnd100,numbervnd50,numbervnd10 = calculate(moneys)
-    if self.predict == "BIG":
+    if predict == "BIG":
         index = indexBIG
     else:
         index = indexSMALL
@@ -106,15 +113,15 @@ def get_history_result():# return [10,14,5,7,16]
         history.append(int(kq[0])+int(kq[2])+int(kq[4]))
     return history
 
-def make_data(lenrecord=100):
-    history = get_history_result()
-    data = []
-    label = []
-    for i in range(len(history)-lenrecord):
-        data.append(history[i:i+lenrecord])
-        label.append(history[i+lenrecord])
-    dt = history[len(history)-lenrecord:len(history)]
-    return data,label,[dt]
+# def make_data(lenrecord=100):
+#     history = get_history_result()
+#     data = []
+#     label = []
+#     for i in range(len(history)-lenrecord):
+#         data.append(history[i:i+lenrecord])
+#         label.append(history[i+lenrecord])
+#     dt = history[len(history)-lenrecord:len(history)]
+#     return data,label,[dt]
 
 def check_predict_and_result():
     print("check_predict_and_result...")
@@ -157,26 +164,26 @@ def make_random_data(height = 100, width = 100):
     lb = numpy.random.default_rng().integers(low=0,high=2,size=(height,))
     return dt_1+dt_2+dt_3, lb
 
-def make_predict():
-    print("make_predict...")
-    global predict  
-    score_data, score_label,test_data = make_data()
-    score_label = convert_result(score_label)
-    # print(score_label)
-    start = time.time()
+# def make_predict():
+#     print("make_predict...")
+#     global predict  
+#     score_data, score_label,test_data = make_data()
+#     score_label = convert_result(score_label)
+#     # print(score_label)
+#     start = time.time()
 
-    max_score = 0
-    max_predict = 10.5
-    while time.time()-start <15:
+#     max_score = 0
+#     max_predict = 10.5
+#     while time.time()-start <15:
 
-        rd_data,rd_label = make_random_data()
-        clf.fit(rd_data,rd_label)
-        score = clf.score(score_data,score_label)
-        if score>max_score:
-            max_score = score
-            max_predict = clf.predict(test_data)[0]
-    predict =  convert_predict(max_predict)
-    add_line()
+#         rd_data,rd_label = make_random_data()
+#         clf.fit(rd_data,rd_label)
+#         score = clf.score(score_data,score_label)
+#         if score>max_score:
+#             max_score = score
+#             max_predict = clf.predict(test_data)[0]
+#     predict =  convert_predict(max_predict)
+#     add_line()
     ####
 
 def draw_screen():
@@ -207,7 +214,7 @@ def fix_line(isTrue,resultRaw,betTypeResult):
 
 
 
-############################
+###########################
 try:
     moneys = int(input("moneys: "))
     indexBIG = get_index("BIG")
@@ -237,5 +244,4 @@ while True:
         make_predict()
         bets()
         time.sleep(get_timeBetCountdown(get_json_1()))
-
 
