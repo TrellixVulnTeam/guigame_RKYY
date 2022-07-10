@@ -1,7 +1,5 @@
 import requests,json,time,numpy,pyautogui
-import manipulation
-
-from getAPI import make_data_v2
+from columnar import columnar
 from sklearn import tree
 clf = tree.DecisionTreeClassifier()
 
@@ -173,18 +171,25 @@ def make_predict():
             max_predict = clf.predict(test_data)[0]
     predict =  convert_predict(max_predict)
 
+def draw_screen():
+    global table
+    headers = [""]
+    # os.system("clear")
+    os.system("cls")
+    print(columnar(table, headers, justify="c"))
+    print("waiting...")
 
 
 #############################
 try:
     moneys = int(input("moneys: "))
-    indexBIG = .get_index("BIG")
-    indexSMALL = .get_index("SMALL")
-    indexVND10K = .get_index("VND10K")
-    indexVND50K = .get_index("VND50K")
-    indexVND100K = .get_index("VND100K")
+    indexBIG = get_index("BIG")
+    indexSMALL = get_index("SMALL")
+    indexVND10K = get_index("VND10K")
+    indexVND50K = get_index("VND50K")
+    indexVND100K = get_index("VND100K")
 except:
-    money = 0
+    moneys = 0
 
 
 
@@ -196,6 +201,8 @@ time.sleep(timeBetCountdown)
 
 
 predict = None
+if timeBetCountdown<30:
+    make_predict()
 profits = 0 
 while True:
     if is_newgame():
