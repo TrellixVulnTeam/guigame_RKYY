@@ -113,6 +113,7 @@ def get_history_result():# return [10,14,5,7,16]
         history.append(int(kq[0])+int(kq[2])+int(kq[4]))
     return history
 
+<<<<<<< HEAD
 # def make_data(lenrecord=100):
 #     history = get_history_result()
 #     data = []
@@ -122,6 +123,16 @@ def get_history_result():# return [10,14,5,7,16]
 #         label.append(history[i+lenrecord])
 #     dt = history[len(history)-lenrecord:len(history)]
 #     return data,label,[dt]
+=======
+def make_data(history,lenrecord):
+    data = []
+    label = []
+    for i in range(len(history)-lenrecord):
+        data.append(history[i:i+lenrecord])
+        label.append(history[i+lenrecord])
+    dt = history[len(history)-lenrecord:len(history)]
+    return data,label,[dt]
+>>>>>>> d3614eec9876f0377efebdc26fbd477145f1f033
 
 def check_predict_and_result():
     print("check_predict_and_result...")
@@ -157,13 +168,14 @@ def convert_predict(number):
         return "BIG"
     return "SMALL"
 
-def make_random_data(height = 100, width = 100):
+def make_random_data(height = 1000, width = 100):
     dt_1 = numpy.random.default_rng().integers(low=1,high=7,size=(height,width))
     dt_2 = numpy.random.default_rng().integers(low=1,high=7,size=(height,width))
     dt_3 = numpy.random.default_rng().integers(low=1,high=7,size=(height,width))
     lb = numpy.random.default_rng().integers(low=0,high=2,size=(height,))
     return dt_1+dt_2+dt_3, lb
 
+<<<<<<< HEAD
 # def make_predict():
 #     print("make_predict...")
 #     global predict  
@@ -184,13 +196,43 @@ def make_random_data(height = 100, width = 100):
 #             max_predict = clf.predict(test_data)[0]
 #     predict =  convert_predict(max_predict)
 #     add_line()
+=======
+def make_predict():
+    print("make_predict...")
+    global predict
+    history = get_history_result()
+
+    lenrecord = 1
+    max_predict = 10.5
+    start = time.time()
+    while time.time()-start <15:
+
+        score_data, score_label,test_data = make_data(history,lenrecord)
+        score_label = convert_result(score_label)
+        # print(score_label)
+        print("score_data",score_data)
+        print("test_data",test_data)
+
+        rd_data,rd_label = make_random_data(width=lenrecord)
+        print("rd_data",rd_data)
+        print("rd_label",rd_label)
+        clf.fit(rd_data,rd_label)
+        score = clf.score(score_data,score_label)
+        if score==1:
+            max_predict = clf.predict(test_data)[0]
+            lenrecord+=1
+        break
+    print(lenrecord)
+    predict =  convert_predict(max_predict)
+    add_line()
+>>>>>>> d3614eec9876f0377efebdc26fbd477145f1f033
     ####
 
 def draw_screen():
     global table
     headers = ["index","id","predict","moneys","resutl","bettype","profits"]
     # os.system("clear")
-    os.system("cls")
+    # os.system("cls")
     print(columnar(table, headers, justify="c",no_borders=True))
     print("waiting...")
 
@@ -215,6 +257,7 @@ def fix_line(isTrue,resultRaw,betTypeResult):
 
 
 ###########################
+<<<<<<< HEAD
 try:
     moneys = int(input("moneys: "))
     indexBIG = get_index("BIG")
@@ -224,24 +267,44 @@ try:
     indexVND100K = get_index("VND100K")
 except:
     moneys = 0
+=======
+# try:
+#     moneys = int(input("moneys: "))
+#     indexBIG = get_index("BIG")
+#     indexSMALL = get_index("SMALL")
+#     indexVND10K = get_index("VND10K")
+#     indexVND50K = get_index("VND50K")
+#     indexVND100K = get_index("VND100K")
+# except:
+#     moneys = 0
 
 
-table = []
-js = get_json_1()
-idgame = get_id(js)
-timeBetCountdown = get_timeBetCountdown(js)
-print(idgame,timeBetCountdown)
+# table = []
+# js = get_json_1()
+# idgame = get_id(js)
+# timeBetCountdown = get_timeBetCountdown(js)
+# print(idgame,timeBetCountdown)
+# predict = None
+# if timeBetCountdown>30:
+#     make_predict()
+#     time.sleep(get_timeBetCountdown(get_json_1()))
+# else:
+#     time.sleep(timeBetCountdown)
+# profits = 0 
+# while True:
+#     if is_newgame():
+#         check_predict_and_result()
+#         make_predict()
+#         bets()
+#         time.sleep(get_timeBetCountdown(get_json_1()))
+
+>>>>>>> d3614eec9876f0377efebdc26fbd477145f1f033
+
+
 predict = None
-if timeBetCountdown>30:
-    make_predict()
-    time.sleep(get_timeBetCountdown(get_json_1()))
-else:
-    time.sleep(timeBetCountdown)
-profits = 0 
-while True:
-    if is_newgame():
-        check_predict_and_result()
-        make_predict()
-        bets()
-        time.sleep(get_timeBetCountdown(get_json_1()))
 
+<<<<<<< HEAD
+=======
+
+make_predict()
+>>>>>>> d3614eec9876f0377efebdc26fbd477145f1f033
