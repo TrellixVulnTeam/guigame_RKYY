@@ -227,7 +227,7 @@ print(idgame,timeBetCountdown)
 predict = None
 if timeBetCountdown>30:
     make_predict()
-    time.sleep(timeBetCountdown(get_json_1()))
+    time.sleep(get_timeBetCountdown(get_json_1()))
 else:
     time.sleep(timeBetCountdown)
 profits = 0 
