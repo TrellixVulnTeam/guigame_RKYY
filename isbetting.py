@@ -1,5 +1,6 @@
-import requests,json,time,numpy,pyautogui
+import requests,json,time,numpy,pyautogui,os
 from columnar import columnar
+from click import  style
 from sklearn import tree
 clf = tree.DecisionTreeClassifier()
 
@@ -11,12 +12,12 @@ def quit_game(mes):
     import sys
     sys.exit(mes)
     
-def calculate(money ):
-    numbervnd100 = money//100
-    money = money%100
-    numbervnd50 = money//50
-    money = money%50
-    numbervnd10 = money//10 
+def calculate(moneys ):
+    numbervnd100 = moneys//100
+    moneys = moneys%100
+    numbervnd50 = moneys//50
+    moneys = moneys%50
+    numbervnd10 = moneys//10 
     return numbervnd100,numbervnd50,numbervnd10
 
 def get_index(name):
@@ -89,6 +90,7 @@ def is_newgame():
     newid = get_id(get_json_1())
     if newid - idgame  == 1:
         idgame = newid
+        time.sleep(2)
         return True
     time.sleep(5)
     return is_newgame()
@@ -123,14 +125,18 @@ def check_predict_and_result():
 
     isTrue = False
     last_js =  get_the_last_json()
-    if get_id(last_js) != idgame:
-        quit_game("da xay ra loi")
-    if predict in  get_betTypeResult(last_js):
+    if get_id(last_js) != idgame-1:
+        quit_game("da xay ra loi ket qua khong lien tuc")
+
+    resultRaw = get_resultRaw(last_js)
+    betTypeResult = get_betTypeResult(last_js)
+    if predict in  betTypeResult:
         profits +=1
         isTrue = True
     else:
         profits -=1
-    print(isTrue,profits)
+    
+    fix_line(isTrue,resultRaw,betTypeResult)
 
 def convert_result(listt):
     for i in range(len(listt)):
@@ -170,17 +176,38 @@ def make_predict():
             max_score = score
             max_predict = clf.predict(test_data)[0]
     predict =  convert_predict(max_predict)
+    add_line()
+    ####
 
 def draw_screen():
     global table
-    headers = [""]
+    headers = ["index","id","predict","moneys","resutl","bettype","profits"]
     # os.system("clear")
     os.system("cls")
-    print(columnar(table, headers, justify="c"))
+    print(columnar(table, headers, justify="c",no_borders=True))
     print("waiting...")
 
 
-#############################
+def add_line():
+    global table,predict,moneys,idgame
+    table.append([len(table),idgame,predict,moneys,"","",""])
+    draw_screen()
+def fix_line(isTrue,resultRaw,betTypeResult):
+    global table,profits
+    if isTrue:
+        color = "green"
+    else:
+        color = "red"
+    table[-1][4] = f"{style(resultRaw,fg=color)}"
+    table[-1][5] = f"{style(betTypeResult,fg=color)}"
+    table[-1][6] = f"{style(profits,fg=color)}"
+    draw_screen()
+
+
+
+
+
+############################
 try:
     moneys = int(input("moneys: "))
     indexBIG = get_index("BIG")
@@ -192,17 +219,17 @@ except:
     moneys = 0
 
 
-
+table = []
 js = get_json_1()
 idgame = get_id(js)
 timeBetCountdown = get_timeBetCountdown(js)
 print(idgame,timeBetCountdown)
-time.sleep(timeBetCountdown)
-
-
 predict = None
-if timeBetCountdown<30:
+if timeBetCountdown>30:
     make_predict()
+    time.sleep(timeBetCountdown(get_json_1()))
+else:
+    time.sleep(timeBetCountdown)
 profits = 0 
 while True:
     if is_newgame():
