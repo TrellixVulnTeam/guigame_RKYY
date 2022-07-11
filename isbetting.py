@@ -5,6 +5,8 @@ from rd import make_data
 from sklearn import tree
 clf = tree.DecisionTreeClassifier()
 
+from readcsv import add_dataframe
+
 
 ##########____________Pyautogui,________________________
 
@@ -201,5 +203,6 @@ while True:
     if is_newgame():
         check_predict_and_result()
         make_predict()
+        add_dataframe()
         bets()
         time.sleep(get_timeBetCountdown(get_json_1()))

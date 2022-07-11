@@ -9,7 +9,7 @@ def get_json_150():
 
 
 def read_dataframe():
-	df = pd.read_csv('data.csv')
+	df = pd.read_csv('data.csv',index_col = 0)
 	return df
 
 def create_dataframe():
@@ -27,7 +27,6 @@ def create_dataframe():
 	df.drop('currentTime', axis=1, inplace=True)
 	df.drop('timeBetCountdown', axis=1, inplace=True)
 	df.sort_values('id', ascending=True,inplace=True)
-	df.reset_index(inplace=True)
 	df.dropna(how="any",inplace=True)
 	# df.to_csv('data.csv')
 	return df
@@ -41,15 +40,5 @@ def add_dataframe():
 	zipdf = pd.concat([olddf,newdf])
 	zipdf.to_csv('data.csv')
 
-# add_dataframe()
-# print(read_dataframe())
-# print(create_dataframe())
 
-
-# df = create_dataframe()
-# print(df)
-# df.dropna(how="any",inplace=True)
-# print(df)
-add_dataframe()
-
-print(read_dataframe())
+	
